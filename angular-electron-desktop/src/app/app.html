@@ -1,0 +1,16 @@
+﻿<app-home 
+  *ngIf="currentPage() === 'home'"
+  [selectedActivity]="selectedActivity()"
+  [activitiesCount]="activityService.activitiesCount()"
+  (onPickRandom)="pickRandom()"
+  (onManage)="goToManage()">
+</app-home>
+
+<app-manage
+  *ngIf="currentPage() === 'manage'"
+  [activities]="activityService.activities()"
+  (onAdd)="addActivity($event)"
+  (onUpdate)="updateActivity($event.index, $event.value)"
+  (onDelete)="deleteActivity($event)"
+  (onBack)="goToHome()">
+</app-manage>
