@@ -4,9 +4,14 @@ const fs = require('fs');
 
 let mainWindow;
 
-// Veri dosyası için relative path
-// Bu dosya uygulamanın çalıştığı klasörde oluşturulur
-const DATA_FILE = path.join(__dirname, 'activities.json');
+// Veri dosyası yolu: app hazır olduktan sonra belirlenir
+// Geliştirme: proje klasörü. Yayın: kullanıcı AppData (kalıcı, yazılabilir)
+function getDataFilePath() {
+  if (app.isPackaged) {
+    return path.join(app.getPath('userData'), 'activities.json');
+  }
+  return path.join(__dirname, 'activities.json');
+}
 
 function createWindow() {
   // Default menüyü kaldır
@@ -53,8 +58,9 @@ app.on('window-all-closed', function () {
 // Aktiviteleri oku
 ipcMain.handle('get-activities', async () => {
   try {
-    if (fs.existsSync(DATA_FILE)) {
-      const data = fs.readFileSync(DATA_FILE, 'utf8');
+    const dataFile = getDataFilePath();
+    if (fs.existsSync(dataFile)) {
+      const data = fs.readFileSync(dataFile, 'utf8');
       return JSON.parse(data);
     }
     return [];
@@ -67,7 +73,8 @@ ipcMain.handle('get-activities', async () => {
 // Aktiviteleri kaydet
 ipcMain.handle('save-activities', async (event, activities) => {
   try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(activities, null, 2), 'utf8');
+    const dataFile = getDataFilePath();
+    fs.writeFileSync(dataFile, JSON.stringify(activities, null, 2), 'utf8');
     return { success: true };
   } catch (error) {
     console.error('Aktiviteler kaydedilirken hata:', error);
