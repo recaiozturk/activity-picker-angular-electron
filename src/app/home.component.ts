@@ -17,9 +17,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   ],
   template: `
     <mat-toolbar class='black-toolbar'>
-      <span>Ne Yapsam?</span>
+      <span>Activity Picker</span>
       <span class='spacer'></span>
-      <button mat-icon-button (click)='onManage.emit()' aria-label='Aktiviteleri Yönet' class='white-icon'>
+      <button mat-icon-button (click)='onManage.emit()' aria-label='Manage activities' class='white-icon'>
         <mat-icon>add</mat-icon>
       </button>
     </mat-toolbar>
@@ -31,7 +31,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
           (click)='onPickRandom.emit()' 
           [disabled]='activitiesCount === 0'
           class='pick-button black-button'>
-          Rastgele Seç
+          Pick random
         </button>
         
         <div class='selected-activity' *ngIf='selectedActivity'>
@@ -39,8 +39,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         </div>
         
         <div class='no-activities' *ngIf='!selectedActivity && activitiesCount === 0'>
-          <p>Henüz aktivite eklenmemiş</p>
-          <p class='hint'>Aktivite eklemek için + butonuna tıklayın</p>
+          <p>No activities yet</p>
+          <p class='hint'>Tap + to add activities</p>
         </div>
       </div>
     </div>

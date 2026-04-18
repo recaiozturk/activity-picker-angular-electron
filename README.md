@@ -28,15 +28,15 @@ This project was developed for me to:
 
 ## Features
 
-- ✅ **Add Activities**: Save your favorite activities
-- ✅ **Edit Activities**: Update existing activities with smooth UX
-- ✅ **Delete Activities**: Remove activities you no longer want
-- ✅ **Random Selection**: Let the app decide what to do
-- ✅ **Persistent Storage**: Data saved in local JSON file
-- ✅ **Portable**: No installation required, works anywhere
-- ✅ **Minimalist Design**: Clean black & white interface
-- ✅ **No Backend**: Completely offline, no server needed
-- ✅ **No Database**: Simple JSON file storage
+- **Add Activities**: Save your favorite activities
+- **Edit Activities**: Update existing activities with smooth UX
+- **Delete Activities**: Remove activities you no longer want
+- **Random Selection**: Let the app decide what to do
+- **Persistent Storage**: Data saved in local JSON file
+- **Portable**: No installation required, works anywhere
+- **Minimalist Design**: Clean black & white interface
+- **No Backend**: Completely offline, no server needed
+- **No Database**: Simple JSON file storage
 
 ---
 
@@ -191,11 +191,11 @@ C:\path\to\angular-electron-desktop\activities.json
 
 ## Security
 
-- ✅ **Context Isolation**: Enabled
-- ✅ **Node Integration**: Disabled
-- ✅ **Preload Script**: Secure API bridge
-- ✅ **IPC Handlers**: Controlled file access
-- ✅ **No Remote Code**: All code is local
+- **Context Isolation**: Enabled
+- **Node Integration**: Disabled
+- **Preload Script**: Secure API bridge
+- **IPC Handlers**: Controlled file access
+- **No Remote Code**: All code is local
 
 ---
 

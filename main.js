@@ -4,8 +4,7 @@ const fs = require('fs');
 
 let mainWindow;
 
-// Veri dosyası yolu: app hazır olduktan sonra belirlenir
-// Geliştirme: proje klasörü. Yayın: kullanıcı AppData (kalıcı, yazılabilir)
+// Data file path: dev = project folder; packaged = userData (persistent, writable)
 function getDataFilePath() {
   if (app.isPackaged) {
     return path.join(app.getPath('userData'), 'activities.json');
@@ -14,7 +13,6 @@ function getDataFilePath() {
 }
 
 function createWindow() {
-  // Default menüyü kaldır
   Menu.setApplicationMenu(null);
 
   mainWindow = new BrowserWindow({
@@ -27,18 +25,14 @@ function createWindow() {
     }
   });
 
-  // Angular build çıktısını yükle
   const indexPath = path.join(__dirname, 'dist', 'activity-picker', 'browser', 'index.html');
-  
+
   if (fs.existsSync(indexPath)) {
     mainWindow.loadFile(indexPath);
   } else {
-    console.error('Build dosyası bulunamadı. Lütfen önce "npm run build" komutunu çalıştırın.');
+    console.error('Build not found. Run "npm run build" first.');
     app.quit();
   }
-
-  // DevTools'u development modda aç
-  // mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
@@ -53,9 +47,6 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit();
 });
 
-// IPC Handlers - Aktivite işlemleri için
-
-// Aktiviteleri oku
 ipcMain.handle('get-activities', async () => {
   try {
     const dataFile = getDataFilePath();
@@ -65,19 +56,18 @@ ipcMain.handle('get-activities', async () => {
     }
     return [];
   } catch (error) {
-    console.error('Aktiviteler okunurken hata:', error);
+    console.error('Error reading activities:', error);
     return [];
   }
 });
 
-// Aktiviteleri kaydet
 ipcMain.handle('save-activities', async (event, activities) => {
   try {
     const dataFile = getDataFilePath();
     fs.writeFileSync(dataFile, JSON.stringify(activities, null, 2), 'utf8');
     return { success: true };
   } catch (error) {
-    console.error('Aktiviteler kaydedilirken hata:', error);
+    console.error('Error saving activities:', error);
     return { success: false, error: error.message };
   }
 });

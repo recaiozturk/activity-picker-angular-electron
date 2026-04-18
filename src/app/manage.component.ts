@@ -27,28 +27,28 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   ],
   template: `
     <mat-toolbar class='black-toolbar'>
-      <button mat-icon-button (click)='onBack.emit()' aria-label='Geri' class='white-icon'>
+      <button mat-icon-button (click)='onBack.emit()' aria-label='Back' class='white-icon'>
         <mat-icon>arrow_back</mat-icon>
       </button>
-      <span>Aktivitelerimi Yönet</span>
+      <span>Manage activities</span>
     </mat-toolbar>
 
     <div class='manage-container' #container>
-      <!-- Aktivite Ekleme/Düzenleme Bölümü -->
+      <!-- Add / edit activity -->
       <mat-card class='add-card'>
         <mat-card-header>
           <mat-card-title>
-            {{ editingIndex() !== null ? 'Aktiviteyi Düzenle' : 'Yeni Aktivite Ekle' }}
+            {{ editingIndex() !== null ? 'Edit activity' : 'Add new activity' }}
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <mat-form-field appearance='outline' class='full-width'>
-            <mat-label>Aktivite</mat-label>
+            <mat-label>Activity</mat-label>
             <input 
               matInput 
               [(ngModel)]='newActivity' 
               (keyup.enter)='saveActivity()'
-              placeholder='Örn: Kitap oku, Yürüyüşe çık...'
+              placeholder='e.g. Read a book, Go for a walk...'
               [disabled]='isProcessing()'
               #activityInput
               autofocus>
@@ -67,7 +67,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
               <mat-icon *ngIf='!isProcessing()'>
                 {{ editingIndex() !== null ? 'check' : 'add' }}
               </mat-icon>
-              {{ isProcessing() ? 'Kaydediliyor...' : (editingIndex() !== null ? 'Güncelle' : 'Ekle') }}
+              {{ isProcessing() ? 'Saving...' : (editingIndex() !== null ? 'Update' : 'Add') }}
             </button>
             <button 
               *ngIf='editingIndex() !== null'
@@ -76,16 +76,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
               [disabled]='isProcessing()'
               class='cancel-button'>
               <mat-icon>close</mat-icon>
-              İptal
+              Cancel
             </button>
           </div>
         </mat-card-content>
       </mat-card>
 
-      <!-- Aktivite Listesi -->
+      <!-- Activity list -->
       <mat-card class='list-card'>
         <mat-card-header>
-          <mat-card-title>Aktivitelerim ({{ activities.length }})</mat-card-title>
+          <mat-card-title>My activities ({{ activities.length }})</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <mat-list *ngIf='activities.length > 0'>
@@ -97,7 +97,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
                   mat-icon-button 
                   (click)='startEdit(i, activity)'
                   [disabled]='editingIndex() !== null || deletingIndex() === i'
-                  aria-label='Düzenle'>
+                  aria-label='Edit'>
                   <mat-icon>edit</mat-icon>
                 </button>
                 <button 
@@ -105,7 +105,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
                   color='warn' 
                   (click)='deleteActivity(i)'
                   [disabled]='deletingIndex() === i || editingIndex() !== null'
-                  aria-label='Sil'>
+                  aria-label='Delete'>
                   <mat-spinner 
                     *ngIf='deletingIndex() === i' 
                     diameter='24' 
@@ -119,8 +119,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
           
           <div class='empty-list' *ngIf='activities.length === 0'>
             <mat-icon class='empty-icon'>inbox</mat-icon>
-            <p>Henüz aktivite eklemediniz</p>
-            <p class='hint'>Yukarıdaki formu kullanarak aktivite ekleyin</p>
+            <p>You have not added any activities yet</p>
+            <p class='hint'>Use the form above to add an activity</p>
           </div>
         </mat-card-content>
       </mat-card>
@@ -261,24 +261,24 @@ export class ManageComponent {
   deletingIndex = signal<number | null>(null);
 
   startEdit(index: number, currentValue: string) {
-    // Düzenleme moduna geç
+    // Enter edit mode
     this.editingIndex.set(index);
     this.newActivity = currentValue;
     
-    // Üste scroll yap
+    // Scroll to top
     const container = document.querySelector('.manage-container');
     if (container) {
       container.scrollTo({ top: 0, behavior: 'smooth' });
     }
     
-    // Input'a focus ver
+    // Focus and select input text
     setTimeout(() => {
       const input = document.querySelector('.add-card input') as HTMLInputElement;
       if (input) {
         input.focus();
         input.select();
       }
-    }, 300); // Scroll animasyonu için biraz bekle
+    }, 300); // Wait for scroll animation
   }
 
   async saveActivity() {
